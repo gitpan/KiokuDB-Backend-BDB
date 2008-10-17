@@ -11,8 +11,6 @@ use KiokuDB::Backend::BDB::Manager;
 
 use namespace::clean -except => 'meta';
 
-our $VERSION = "0.01";
-
 # TODO use a secondary DB to keep track of the root set
 # integrate with the Search::GIN bdb backend for additional secondary indexing
 
@@ -21,6 +19,8 @@ our $VERSION = "0.01";
 # also port Search::GIN's Data::Stream::Bulk/BDB cursor code
 # this should be generic (work with both c_get and c_pget, and the various
 # flags)
+
+our $VERSION = "0.02";
 
 with qw(
     KiokuDB::Backend

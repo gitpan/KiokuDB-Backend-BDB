@@ -13,8 +13,21 @@ WriteMakefile(
     SIGN         => 1,
     PL_FILES     => { },
     PREREQ_PM    => {
-        'KiokuDB' => 0,
-        'BerkeleyDB::Manager' => 0,
-        'BerkeleyDB' => 0.35,
+        'Moose' => 0,
+		'MooseX::Types::Path::Class' => 0,
+
+		'KiokuDB' => 0,
+
+		'Data::Stream::Bulk' => 0,
+
+        'BerkeleyDB::Manager' => '0.07',
+
+        'Test::use::ok' => 0,
+        'Test::More' => 0,
+        'Test::TempDir' => 0,
+
+		'Storable' => 0,
+
+        'Search::GIN' => 0,
     },
 );

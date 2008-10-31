@@ -20,15 +20,15 @@ use namespace::clean -except => 'meta';
 # this should be generic (work with both c_get and c_pget, and the various
 # flags)
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 with qw(
     KiokuDB::Backend
     KiokuDB::Backend::Serialize::Storable
-    KiokuDB::Backend::Clear
-    KiokuDB::Backend::TXN
-    KiokuDB::Backend::Scan
-    KiokuDB::Backend::Query::Simple::Linear
+    KiokuDB::Backend::Role::Clear
+    KiokuDB::Backend::Role::TXN
+    KiokuDB::Backend::Role::Scan
+    KiokuDB::Backend::Role::Query::Simple::Linear
 );
 
 has manager => (

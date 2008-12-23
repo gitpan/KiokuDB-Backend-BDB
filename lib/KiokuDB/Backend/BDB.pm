@@ -4,7 +4,6 @@ package KiokuDB::Backend::BDB;
 use Moose;
 
 use Scalar::Util qw(weaken);
-use Storable qw(nfreeze thaw);
 use MooseX::Types::Path::Class qw(Dir);
 
 use KiokuDB::Backend::BDB::Manager;
@@ -20,13 +19,14 @@ use namespace::clean -except => 'meta';
 # this should be generic (work with both c_get and c_pget, and the various
 # flags)
 
-our $VERSION = "0.08";
+our $VERSION = "0.09";
 
 with qw(
     KiokuDB::Backend
-    KiokuDB::Backend::Serialize::Storable
+    KiokuDB::Backend::Serialize::Delegate
     KiokuDB::Backend::Role::Clear
     KiokuDB::Backend::Role::TXN
+    KiokuDB::Backend::Role::TXN::Nested
     KiokuDB::Backend::Role::Scan
     KiokuDB::Backend::Role::Query::Simple::Linear
 );
@@ -138,13 +138,57 @@ __END__
 
 =head1 NAME
 
-KiokuDB::Backend::BDB -
+KiokuDB::Backend::BDB - L<BerkeleyDB> backend for L<KiokuDB>.
 
 =head1 SYNOPSIS
 
-	use KiokuDB::Backend::BDB;
+    KiokuDB->connect( "bdb:dir=/path/to/storage", create => 1 );
 
 =head1 DESCRIPTION
+
+This is a L<BerkeleyDB> based backend for L<KiokuDB>.
+
+It is the best performing backend for most tasks, and is very feature complete
+as well.
+
+The L<KiokuDB::Backend::BDB::GIN> subclass provides searching support using
+L<Search::GIN>.
+
+=head1 ATTRIBUTES
+
+=over 4
+
+=item manager
+
+The L<BerkeleyDB::Manager> instance that opens up the L<BerkeleyDB> databases.
+
+This will be coerced from a hash reference too, so you can do something like:
+
+    KiokuDB::Backend::BDB->new(
+        manager => {
+            home => "/path/to/storage",
+            create => 1,
+            transactions => 0,
+        },
+    );
+
+to control the various parameters.
+
+=back
+
+=head1 VERSION CONTROL
+
+L<http://github.com/nothingmuch/kiokudb-backend-bdb>
+
+=head1 AUTHOR
+
+Yuval Kogman E<lt>nothingmuch@woobling.orgE<gt>
+
+=head1 COPYRIGHT
+
+    Copyright (c) 2008 Yuval Kogman, Infinity Interactive. All rights
+    reserved This program is free software; you can redistribute
+    it and/or modify it under the same terms as Perl itself.
 
 =cut
 

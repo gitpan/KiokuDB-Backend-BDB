@@ -23,7 +23,7 @@ use namespace::clean -except => 'meta';
 # this should be generic (work with both c_get and c_pget, and the various
 # flags)
 
-our $VERSION = "0.10";
+our $VERSION = "0.11";
 
 with qw(
     KiokuDB::Backend
@@ -80,7 +80,11 @@ sub delete {
     my @uids = map { ref($_) ? $_->id : $_ } @ids_or_entries;
 
     my $primary_db = $self->primary_db;
-    $primary_db->db_del($_) for @uids;
+    foreach my $id ( @uids ) {
+        if ( my $ret = $primary_db->db_del($id) ) {
+            die $ret;
+        }
+    }
 }
 
 sub insert {
@@ -98,7 +102,7 @@ sub insert {
             if ( $ret == DB_KEYEXIST ) {
                 croak "Entry " . $entry->id . " already exists in the database";
             } else {
-                die $BerkeleyDB::Error;
+                die $ret;
             }
         }
     }
@@ -143,6 +147,15 @@ sub all_entries {
         db => $self->primary_db,
         values => 1,
     )->filter(sub {[ map { $self->deserialize($_) } @$_ ]});
+}
+
+sub all_entry_ids {
+    my $self = shift;
+
+    $self->manager->cursor_stream(
+        db => $self->primary_db,
+        keys => 1,
+    );
 }
 
 # sub root_entries { } # secondary index?

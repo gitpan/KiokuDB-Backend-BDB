@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               KiokuDB-Backend-BDB
-version:            0.13
+version:            0.14
 abstract:           ~
 author:  []
 license:            unknown
@@ -12,7 +12,7 @@ requires:
     BerkeleyDB:           0.36
     BerkeleyDB::Manager:  0.11
     Data::Stream::Bulk:   0
-    KiokuDB:              0.20
+    KiokuDB:              0.24
     Moose:                0
     MooseX::Types::Path::Class:  0
     Search::GIN:          0
